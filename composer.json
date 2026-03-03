@@ -1,8 +1,9 @@
 {
-    "name": "belal/larapdf",
+    "name": "belalkhandev/larapdf",
     "description": "Advanced Laravel PDF generation package with full Tailwind CSS and custom font support",
     "type": "library",
     "license": "MIT",
+    "version": "0.0.1",
     "authors": [
         {
             "name": "Belal",
