@@ -1,0 +1,126 @@
+# LaraPdf
+
+Advanced Laravel PDF generation package with full Tailwind CSS and custom font support. Built on top of [Spatie Browsershot](https://github.com/spatie/browsershot).
+
+## Features
+
+- ✨ **Fluent API**: Chainable methods for easy configuration.
+- 🎨 **Tailwind CSS**: Native support for Tailwind CSS (CDN or local).
+- 🔡 **Custom Fonts**: Embed custom fonts easily.
+- 📄 **Blade Integration**: Use Laravel Blade views directly.
+- ⏳ **Async Generation**: Built-in support for Laravel Queues.
+- 🖼️ **Modern Engine**: Uses Headless Chrome (Puppeteer) for perfect rendering.
+
+## Installation
+
+You can install the package via composer:
+
+```bash
+composer require belal/larapdf
+```
+
+Publish the config file:
+
+```bash
+php artisan vendor:publish --tag=belal-larapdf-config
+```
+
+Install Puppeteer (required):
+
+```bash
+npm install puppeteer --save
+```
+
+## Basic Usage
+
+```php
+use Belal\LaraPdf\Facades\PDF;
+
+PDF::loadView('invoices.template', ['invoice' => $invoice])
+    ->download('invoice.pdf');
+```
+
+## Advanced Usage
+
+```php
+PDF::loadView('reports.annual', $data)
+    ->paperSize('A4')
+    ->orientation('landscape')
+    ->margins(15, 15, 15, 15)
+    ->withTailwind()
+    ->font('Inter', resource_path('fonts/Inter.ttf'))
+    ->googleFont('Inter')
+    ->headerView('pdf.header', ['company' => $company])
+    ->footerView('pdf.footer')
+    ->waitUntilNetworkIdle()
+    ->timeout(120)
+    ->saveToDisk('reports/annual-2026.pdf', 's3');
+```
+
+### HTML Preview
+
+For faster development, you can preview the rendered HTML directly in your browser without generating a PDF.
+
+```php
+PDF::loadView('invoice', $data)
+    ->withTailwind()
+    ->preview(); // Returns an Illuminate\Http\Response
+```
+
+Or just get the raw HTML string:
+
+```php
+$html = PDF::loadView('invoice', $data)->toHtml();
+```
+
+### Custom Fonts
+
+LaraPdf supports both local font files and Google Fonts seamlessly:
+
+```php
+PDF::loadView('invoice', $data)
+    ->googleFont('Inter') // Load 'Inter' from Google Fonts
+    ->font('BrandFont', resource_path('fonts/brand.ttf')) // Load a local .ttf file
+    ->stream();
+```
+
+> [!NOTE]
+> When using `googleFont()`, the package fetches and inlines the font CSS for reliability in isolated Puppeteer contexts.
+
+## Header and Footer Support
+
+LaraPdf makes it incredibly easy to add headers and footers to your PDFs.
+
+### 1. Automatic Extraction (easiest)
+Just use `<header>` and `<footer>` tags directly in your Blade view. LaraPdf will extract them and repeat them on every page automatically.
+
+```html
+<!-- in your blade view -->
+<header>
+    <div class="text-right">Page <span class="pageNumber"></span></div>
+</header>
+```
+
+### 2. Manual Definition
+You can also define headers and footers using the fluent API:
+
+```php
+PDF::loadView('reports.annual', $data)
+    ->headerView('pdf.header', ['title' => 'Annual Report'])
+    ->footerView('pdf.footer')
+    ->stream();
+```
+
+> [!TIP]
+> LaraPdf automatically adjusts your top and bottom margins to **35mm** when a header or footer is detected. It also includes built-in support for common Tailwind utility classes (`flex`, `justify-between`, `font-bold`, `text-green-600`, etc.) inside headers and footers for easy styling.
+
+## Queue Support
+
+```php
+PDF::loadView('reports.heavy', $data)
+    ->queue('reports/heavy.pdf', 's3');
+```
+
+## License
+
+The MIT License (MIT). Please see [License File](LICENSE.md) for more information.

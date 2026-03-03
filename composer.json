@@ -1,0 +1,32 @@
+{
+    "name": "belal/larapdf",
+    "description": "Advanced Laravel PDF generation package with full Tailwind CSS and custom font support",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Belal",
+            "email": "belal@example.com"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "illuminate/support": "^10.0|^11.0",
+        "spatie/browsershot": "^4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Belal\\LaraPdf\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Belal\\LaraPdf\\PdfServiceProvider"
+            ],
+            "aliases": {
+                "PDF": "Belal\\LaraPdf\\Facades\\PDF"
+            }
+        }
+    }
+}
