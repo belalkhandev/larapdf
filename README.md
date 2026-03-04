@@ -91,11 +91,19 @@ PDF::loadView('invoice', $data)
 ### Paper Size & Orientation
 
 ```php
+// Standard size
 PDF::loadView('invoice', $data)
     ->paperSize('a4') // a3, a4, a5, letter, etc.
-    ->orientation('landscape') // portrait (default) or landscape
+    ->orientation('landscape')
+    ->stream();
+
+// Custom size (width, height, unit)
+// Supports: mm, cm, in, px
+PDF::loadView('invoice', $data)
+    ->paperSize(100, 200, 'mm')
     ->stream();
 ```
+
 
 ### Margins
 

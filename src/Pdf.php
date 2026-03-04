@@ -25,6 +25,10 @@ class Pdf
     protected bool $withTailwind = false;
     protected ?string $localTailwindPath = null;
     protected bool $waitNetworkIdle = false;
+    protected ?float $paperWidth = null;
+    protected ?float $paperHeight = null;
+    protected string $paperUnit = 'mm';
+
 
     public function __construct(
         protected BrowsershotDriver $driver,
@@ -51,11 +55,20 @@ class Pdf
         return $this;
     }
 
-    public function paperSize(string $size): self
+    public function paperSize(string|float $width, ?float $height = null, string $unit = 'mm'): self
     {
-        $this->paperSize = $size;
+        if (is_string($width) && $height === null) {
+            $this->paperSize = $width;
+            $this->paperWidth = null;
+            $this->paperHeight = null;
+        } else {
+            $this->paperWidth = (float) $width;
+            $this->paperHeight = (float) $height;
+            $this->paperUnit = $unit;
+        }
         return $this;
     }
+
 
     public function orientation(string $orientation): self
     {
@@ -222,8 +235,14 @@ class Pdf
             }
         }
 
-        $browsershot->format($this->paperSize)
-            ->orientation($this->orientation)
+        if ($this->paperWidth && $this->paperHeight) {
+            $browsershot->paperSize($this->paperWidth, $this->paperHeight, $this->paperUnit);
+        } else {
+            $browsershot->format($this->paperSize);
+        }
+
+        $browsershot->orientation($this->orientation)
+
             ->margins($this->margins[0], $this->margins[1], $this->margins[2], $this->margins[3])
             ->timeout($this->timeout);
 
