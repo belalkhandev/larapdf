@@ -22,8 +22,9 @@ composer require belalkhandev/larapdf
 Publish the config file:
 
 ```bash
-php artisan vendor:publish --tag=belal-larapdf-config
+php artisan vendor:publish --tag=belalkhandev-larapdf-config
 ```
+
 
 Install Puppeteer (required):
 

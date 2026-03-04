@@ -48,11 +48,11 @@ class PdfServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 __DIR__ . '/../config/pdf.php' => config_path('pdf.php'),
-            ], 'belal-larapdf-config');
+            ], 'belalkhandev-larapdf-config');
 
             $this->publishes([
                 __DIR__ . '/../resources/views' => resource_path('views/vendor/larapdf'),
-            ], 'belal-larapdf-views');
+            ], 'belalkhandev-larapdf-views');
 
             $this->commands([
                 Commands\InstallChromeCommand::class,
