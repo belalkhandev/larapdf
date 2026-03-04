@@ -90,15 +90,19 @@ class Pdf
     public function googleFont(string $family): self
     {
         $this->fontManager->registerGoogleFont($family);
+        $this->waitNetworkIdle = true;
         return $this;
     }
+
 
     public function withTailwind(?string $path = null): self
     {
         $this->withTailwind = true;
         $this->localTailwindPath = $path;
+        $this->waitNetworkIdle = true;
         return $this;
     }
+
 
     public function waitUntilNetworkIdle(): self
     {
@@ -194,9 +198,11 @@ class Pdf
             $this->extractHeaderFooterFromHtml($html);
         }
 
-        $browsershot = Browsershot::html($html);
+        $browsershot = Browsershot::html($html)
+            ->printBackground();
 
         $this->driver->configure($browsershot);
+
 
         if ($this->headerHtml) {
             $browsershot->showBrowserHeaderAndFooter()
@@ -300,8 +306,27 @@ class Pdf
             }
         }
 
+        // Inject global print CSS to ensure colors and backgrounds are preserved
+        $colorAdjustCss = '
+            <style>
+                @media print {
+                    * {
+                        -webkit-print-color-adjust: exact !important;
+                        print-color-adjust: exact !important;
+                    }
+                }
+            </style>
+        ';
+
+        if (str_contains($html, '</head>')) {
+            $html = str_replace('</head>', $colorAdjustCss . '</head>', $html);
+        } else {
+            $html = $colorAdjustCss . $html;
+        }
+
         return $html;
     }
+
 
     protected function prepareHeaderFooterHtml(string $html): string
     {

@@ -40,7 +40,8 @@ class BrowsershotDriver
         }
 
 
-        $browsershot->setOption('args', ['--no-sandbox', '--disable-setuid-sandbox']);
+        $browsershot->setOption('args', ['--no-sandbox', '--disable-setuid-sandbox', '--font-render-hinting=none']);
+
 
         return $browsershot;
     }
