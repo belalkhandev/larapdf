@@ -127,11 +127,13 @@ PDF::loadView('reports.heavy', $data)
 ### "Could not find Chrome" error
 This usually happens when Puppeteer cannot find the browser executable in its default cache directory.
 
-#### 1. Automatic Install
-Run the built-in command to install Chrome in your project:
+#### 1. Automatic Install (Smart Detection)
+Run the built-in command. It will automatically detect if you have a system Chrome installed and suggest using it to save 600MB:
 ```bash
 php artisan larapdf:install-chrome
 ```
+If not found, it will download a project-specific version. It is smart enough to skip the download if already installed.
+
 
 #### 2. Specify Cache Path (Recommended for pnpm/Shared Hosting)
 If you are using pnpm or a restricted environment, specify a custom cache path in your `.env`:
