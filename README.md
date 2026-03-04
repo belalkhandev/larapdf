@@ -1,15 +1,27 @@
 # LaraPdf
 
-Advanced Laravel PDF generation package with full Tailwind CSS and custom font support. Built on top of [Spatie Browsershot](https://github.com/spatie/browsershot).
+Advanced Laravel PDF generation package built for the modern web. Pixel-perfect, Tailwind CSS ready, and complex script support (like Bengali) out of the box.
 
-## Features
+---
 
-- ✨ **Fluent API**: Chainable methods for easy configuration.
-- 🎨 **Tailwind CSS**: Native support for Tailwind CSS (CDN or local).
-- 🔡 **Custom Fonts**: Embed custom fonts easily.
-- 📄 **Blade Integration**: Use Laravel Blade views directly.
-- ⏳ **Async Generation**: Built-in support for Laravel Queues.
-- 🖼️ **Modern Engine**: Uses Headless Chrome (Puppeteer) for perfect rendering.
+## Why LaraPdf?
+
+Generating PDFs in Laravel has historically been a pain. Traditional libraries often struggle with:
+- **Modern CSS**: Flexbox, Grid, and Tailwind CSS utility classes rarely work correctly.
+- **Complex Scripts**: Bengali, Arabic, or Hindi fonts often render as gibberish or broken boxes.
+- **Environment Discrepancies**: "It works on my machine but not on the server" due to missing system dependencies.
+
+**LaraPdf** solves these by using a real Headless Chrome engine (via Puppeteer). What you see in your browser is exactly what you get in your PDF.
+
+### The Experience
+- ✨ **Developer Friendly**: A clean, fluent API that feels like native Laravel.
+- 🎨 **Visual Excellence**: Full support for Tailwind CSS, background colors, and gradients.
+- 🔡 **Font Mastery**: Seamless integration for Google Fonts and complex Unicode scripts.
+- ⏳ **Smart Rendering**: Automatically waits for network idle to ensure all assets are loaded.
+- 🚀 **Zero-Config**: Built-in command to install and manage Chrome within your project.
+
+---
+
 
 ## Installation
 
