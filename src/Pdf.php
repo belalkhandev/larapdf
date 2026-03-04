@@ -207,7 +207,7 @@ class Pdf
         return response($this->toHtml());
     }
 
-    protected function output(): string
+    public function output(): string
     {
         $html = $this->prepareHtml();
 
