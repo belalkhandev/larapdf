@@ -16,7 +16,7 @@ Advanced Laravel PDF generation package with full Tailwind CSS and custom font s
 You can install the package via composer:
 
 ```bash
-composer require belal/larapdf
+composer require belalkhandev/larapdf
 ```
 
 Publish the config file:
