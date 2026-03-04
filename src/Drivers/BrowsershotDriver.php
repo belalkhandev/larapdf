@@ -31,10 +31,14 @@ class BrowsershotDriver
         }
 
         if ($cachePath = $this->config['puppeteer_cache_path'] ?? null) {
+            if (!is_dir($cachePath)) {
+                @mkdir($cachePath, 0755, true);
+            }
             // Set environment variable for Browsershot's node process
             putenv("PUPPETEER_CACHE_DIR={$cachePath}");
             $browsershot->setOption('env', array_merge($_ENV, ['PUPPETEER_CACHE_DIR' => $cachePath]));
         }
+
 
         $browsershot->setOption('args', ['--no-sandbox', '--disable-setuid-sandbox']);
 

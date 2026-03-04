@@ -36,7 +36,7 @@ return [
     | Useful for CI/CD, shared hosting, or when using pnpm.
     |
     */
-    'puppeteer_cache_path' => env('PDF_PUPPETEER_CACHE_PATH', null),
+    'puppeteer_cache_path' => env('PDF_PUPPETEER_CACHE_PATH', storage_path('app/larapdf/browser')),
 
 
     /*
