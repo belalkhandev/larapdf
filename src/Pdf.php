@@ -64,16 +64,14 @@ class Pdf
             return $this;
         }
 
-        if ($height === null) {
-            throw new \InvalidArgumentException("LaraPdf: Custom paper size requires both width and height. Example: paperSize(100, 200)");
-        }
-
+        // If height is not provided, assume square size (width = height)
         $this->paperWidth = (float) $width;
-        $this->paperHeight = (float) $height;
+        $this->paperHeight = $height !== null ? (float) $height : (float) $width;
         $this->paperUnit = $unit;
 
         return $this;
     }
+
 
 
 
