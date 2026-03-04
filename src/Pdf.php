@@ -112,6 +112,31 @@ class Pdf
         return $this;
     }
 
+    public function nodeBinary(string $path): self
+    {
+        $this->driver->setNodeBinary($path);
+        return $this;
+    }
+
+    public function npmBinary(string $path): self
+    {
+        $this->driver->setNpmBinary($path);
+        return $this;
+    }
+
+    public function chromePath(string $path): self
+    {
+        $this->driver->setChromePath($path);
+        return $this;
+    }
+
+    public function puppeteerCachePath(string $path): self
+    {
+        $this->driver->setPuppeteerCachePath($path);
+        return $this;
+    }
+
+
     public function download(string $filename = 'document.pdf'): Response
     {
         return new Response($this->output(), 200, [
@@ -200,8 +225,41 @@ class Pdf
             $browsershot->waitUntilNetworkIdle();
         }
 
-        return $browsershot->pdf();
+        try {
+            return $browsershot->pdf();
+        } catch (\Symfony\Component\Process\Exception\ProcessFailedException $e) {
+            $this->handleProcessFailure($e);
+            throw $e;
+        } catch (\Exception $e) {
+            if (str_contains($e->getMessage(), 'Could not find Chrome')) {
+                throw new \Belal\LaraPdf\Exceptions\PdfException(
+                    "Chrome not found. Please run 'php artisan larapdf:install-chrome' or configure PDF_CHROME_PATH in your .env file.\nOriginal error: " . $e->getMessage(),
+                    $e->getCode(),
+                    $e
+                );
+            }
+            throw $e;
+        }
     }
+
+    protected function handleProcessFailure($e): void
+    {
+        $output = $e->getProcess()->getErrorOutput();
+
+        if (str_contains($output, 'Could not find Chrome')) {
+            throw new \Belal\LaraPdf\Exceptions\PdfException(
+                "Chrome not found. LaraPdf needs Chrome to render PDFs. \n" .
+                    "Steps to fix:\n" .
+                    "1. Run 'php artisan larapdf:install-chrome' to install a local version.\n" .
+                    "2. Or specify your system Chrome path in .env: PDF_CHROME_PATH=/path/to/chrome\n" .
+                    "3. Ensure the cache directory is writable.\n" .
+                    "Context: /var/www/workspace/laravel-pdf/packages/belal/larapdf/README.md#troubleshooting",
+                (int)$e->getCode(),
+                $e
+            );
+        }
+    }
+
 
     protected function extractHeaderFooterFromHtml(string &$html): void
     {

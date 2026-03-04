@@ -121,6 +121,31 @@ PDF::loadView('reports.heavy', $data)
     ->queue('reports/heavy.pdf', 's3');
 ```
 
+## Troubleshooting
+
+### "Could not find Chrome" error
+This usually happens when Puppeteer cannot find the browser executable in its default cache directory.
+
+#### 1. Automatic Install
+Run the built-in command to install Chrome in your project:
+```bash
+php artisan larapdf:install-chrome
+```
+
+#### 2. Specify Cache Path (Recommended for pnpm/Shared Hosting)
+If you are using pnpm or a restricted environment, specify a custom cache path in your `.env`:
+```env
+PDF_PUPPETEER_CACHE_PATH=/var/www/your-project/storage/puppeteer
+```
+Then run the install command again.
+
+#### 3. Use System Chrome
+If you already have Chrome/Chromium installed on your system:
+```env
+PDF_CHROME_PATH=/usr/bin/google-chrome
+```
+
 ## License
+
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.

@@ -20,10 +20,24 @@ return [
     | Chrome Path
     |--------------------------------------------------------------------------
     |
-    | If you have a specific version of Chrome/Chromium you'd like to use.
+    | If you have a specific version of Chrome/Chromium installed, specify the 
+    | absolute path to the executable here.
     |
     */
     'chrome_path'     => env('PDF_CHROME_PATH', null),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Puppeteer Cache Path
+    |--------------------------------------------------------------------------
+    |
+    | High-level configuration for where Puppeteer should look for/install
+    | browsers. This sets the PUPPETEER_CACHE_DIR environment variable.
+    | Useful for CI/CD, shared hosting, or when using pnpm.
+    |
+    */
+    'puppeteer_cache_path' => env('PDF_PUPPETEER_CACHE_PATH', null),
+
 
     /*
     |--------------------------------------------------------------------------
