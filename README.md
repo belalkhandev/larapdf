@@ -88,7 +88,27 @@ PDF::loadView('invoice', $data)
 > [!NOTE]
 > When using `googleFont()`, the package fetches and inlines the font CSS for reliability in isolated Puppeteer contexts.
 
+### Paper Size & Orientation
+
+```php
+PDF::loadView('invoice', $data)
+    ->paperSize('a4') // a3, a4, a5, letter, etc.
+    ->orientation('landscape') // portrait (default) or landscape
+    ->stream();
+```
+
+### Margins
+
+Set margins in millimeters (top, right, bottom, left):
+
+```php
+PDF::loadView('invoice', $data)
+    ->margins(10, 10, 10, 10)
+    ->stream();
+```
+
 ## Header and Footer Support
+
 
 LaraPdf makes it incredibly easy to add headers and footers to your PDFs.
 
