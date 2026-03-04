@@ -61,13 +61,20 @@ class Pdf
             $this->paperSize = $width;
             $this->paperWidth = null;
             $this->paperHeight = null;
-        } else {
-            $this->paperWidth = (float) $width;
-            $this->paperHeight = (float) $height;
-            $this->paperUnit = $unit;
+            return $this;
         }
+
+        if ($height === null) {
+            throw new \InvalidArgumentException("LaraPdf: Custom paper size requires both width and height. Example: paperSize(100, 200)");
+        }
+
+        $this->paperWidth = (float) $width;
+        $this->paperHeight = (float) $height;
+        $this->paperUnit = $unit;
+
         return $this;
     }
+
 
 
     public function orientation(string $orientation): self
