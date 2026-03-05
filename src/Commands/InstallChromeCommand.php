@@ -6,7 +6,6 @@ namespace Belal\LaraPdf\Commands;
 
 use Illuminate\Console\Command;
 use Symfony\Component\Process\Process;
-use Belal\LaraPdf\Exceptions\PdfException;
 
 class InstallChromeCommand extends Command
 {

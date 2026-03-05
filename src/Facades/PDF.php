@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Facade;
 /**
  * @method static \Belal\LaraPdf\Pdf loadView(string $view, array $data = [])
  * @method static \Belal\LaraPdf\Pdf loadHtml(string $html)
- * @method static \Belal\LaraPdf\Pdf paperSize(string $size)
+ * @method static \Belal\LaraPdf\Pdf paperSize(string|float $width, ?float $height = null, string $unit = 'mm')
  * @method static \Belal\LaraPdf\Pdf orientation(string $orientation)
  * @method static \Belal\LaraPdf\Pdf margins(int $top, int $right, int $bottom, int $left)
  * @method static \Belal\LaraPdf\Pdf headerView(string $view, array $data = [])

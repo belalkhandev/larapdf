@@ -86,6 +86,17 @@ Or just get the raw HTML string:
 $html = PDF::loadView('invoice', $data)->toHtml();
 ```
 
+### Raw PDF Binary
+
+If you need the raw binary content of the PDF (e.g., to send over API or store manually):
+
+```php
+$pdfContent = PDF::loadView('invoice', $data)->output();
+// and
+$pdfBase64 = PDF::loadView('invoice', $data)->base64();
+```
+
+
 ### Custom Fonts
 
 LaraPdf supports both local font files and Google Fonts seamlessly:

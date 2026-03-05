@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace Belal\LaraPdf;
 
 use Belal\LaraPdf\Drivers\BrowsershotDriver;
+use Belal\LaraPdf\Exceptions\PdfException;
 use Belal\LaraPdf\Support\FontManager;
 use Belal\LaraPdf\Support\TailwindInjector;
 use Belal\LaraPdf\Support\ViewRenderer;
 use Illuminate\Contracts\Filesystem\Factory as FilesystemFactory;
 use Illuminate\Http\Response;
 use Spatie\Browsershot\Browsershot;
-use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class Pdf
 {
@@ -257,12 +258,12 @@ class Pdf
 
         try {
             return $browsershot->pdf();
-        } catch (\Symfony\Component\Process\Exception\ProcessFailedException $e) {
+        } catch (ProcessFailedException $e) {
             $this->handleProcessFailure($e);
             throw $e;
         } catch (\Exception $e) {
             if (str_contains($e->getMessage(), 'Could not find Chrome')) {
-                throw new \Belal\LaraPdf\Exceptions\PdfException(
+                throw new PdfException(
                     "Chrome not found. Please run 'php artisan larapdf:install-chrome' or configure PDF_CHROME_PATH in your .env file.\nOriginal error: " . $e->getMessage(),
                     $e->getCode(),
                     $e
@@ -272,12 +273,12 @@ class Pdf
         }
     }
 
-    protected function handleProcessFailure($e): void
+    protected function handleProcessFailure(ProcessFailedException $e): void
     {
         $output = $e->getProcess()->getErrorOutput();
 
         if (str_contains($output, 'Could not find Chrome')) {
-            throw new \Belal\LaraPdf\Exceptions\PdfException(
+            throw new PdfException(
                 "Chrome not found. LaraPdf needs Chrome to render PDFs. \n" .
                     "Steps to fix:\n" .
                     "1. Run 'php artisan larapdf:install-chrome' to install a local version.\n" .
@@ -418,6 +419,9 @@ class Pdf
             'withTailwind' => $this->withTailwind,
             'localTailwindPath' => $this->localTailwindPath,
             'waitNetworkIdle' => $this->waitNetworkIdle,
+            'paperWidth' => $this->paperWidth,
+            'paperHeight' => $this->paperHeight,
+            'paperUnit' => $this->paperUnit,
         ];
     }
 

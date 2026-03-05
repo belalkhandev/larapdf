@@ -38,6 +38,10 @@ return [
     */
     'puppeteer_cache_path' => env('PDF_PUPPETEER_CACHE_PATH', storage_path('app/larapdf/browser')),
 
+    'disable_sandbox' => env('PDF_DISABLE_SANDBOX', false),
+    'font_render_hinting' => env('PDF_FONT_RENDER_HINTING', 'none'),
+    'chrome_args' => [],
+
 
     /*
     |--------------------------------------------------------------------------

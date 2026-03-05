@@ -16,7 +16,7 @@ class PdfServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/pdf.php', 'pdf');
 
-        $this->app->singleton(FontManager::class, function () {
+        $this->app->bind(FontManager::class, function () {
             return new FontManager();
         });
 
@@ -28,7 +28,7 @@ class PdfServiceProvider extends ServiceProvider
             return new ViewRenderer($app['view']);
         });
 
-        $this->app->singleton(BrowsershotDriver::class, function ($app) {
+        $this->app->bind(BrowsershotDriver::class, function ($app) {
             return new BrowsershotDriver($app['config']['pdf']);
         });
 

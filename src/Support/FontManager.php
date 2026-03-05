@@ -16,7 +16,9 @@ class FontManager
 
     public function registerGoogleFont(string $family): void
     {
-        $this->googleFonts[] = $family;
+        if (!in_array($family, $this->googleFonts, true)) {
+            $this->googleFonts[] = $family;
+        }
     }
 
     public function getFontFaceDeclarations(): string
@@ -28,7 +30,12 @@ class FontManager
                 continue;
             }
 
-            $content = base64_encode(file_get_contents($path));
+            $rawContent = file_get_contents($path);
+            if ($rawContent === false) {
+                continue;
+            }
+
+            $content = base64_encode($rawContent);
             $extension = pathinfo($path, PATHINFO_EXTENSION);
             $format = $this->getFormat($extension);
 
@@ -63,7 +70,12 @@ class FontManager
                 ]
             ];
             $context = stream_context_create($opts);
-            $css = @file_get_contents($url, false, $context);
+            set_error_handler(static fn () => true);
+            try {
+                $css = file_get_contents($url, false, $context);
+            } finally {
+                restore_error_handler();
+            }
 
             if ($css) {
                 return "<style>{$css}</style>";

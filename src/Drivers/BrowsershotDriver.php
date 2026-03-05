@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Belal\LaraPdf\Drivers;
 
-use Belal\LaraPdf\Exceptions\PdfException;
+use RuntimeException;
 use Spatie\Browsershot\Browsershot;
 
 class BrowsershotDriver
@@ -32,15 +32,30 @@ class BrowsershotDriver
 
         if ($cachePath = $this->config['puppeteer_cache_path'] ?? null) {
             if (!is_dir($cachePath)) {
-                @mkdir($cachePath, 0755, true);
+                if (!mkdir($cachePath, 0755, true) && !is_dir($cachePath)) {
+                    throw new RuntimeException("Unable to create Puppeteer cache directory: {$cachePath}");
+                }
             }
             // Set environment variable for Browsershot's node process
             putenv("PUPPETEER_CACHE_DIR={$cachePath}");
             $browsershot->setOption('env', array_merge($_ENV, ['PUPPETEER_CACHE_DIR' => $cachePath]));
         }
 
+        $args = $this->config['chrome_args'] ?? [];
 
-        $browsershot->setOption('args', ['--no-sandbox', '--disable-setuid-sandbox', '--font-render-hinting=none']);
+        if (($this->config['disable_sandbox'] ?? false) === true) {
+            $args[] = '--no-sandbox';
+            $args[] = '--disable-setuid-sandbox';
+        }
+
+        $fontRenderHinting = $this->config['font_render_hinting'] ?? 'none';
+        if (is_string($fontRenderHinting) && $fontRenderHinting !== '') {
+            $args[] = '--font-render-hinting=' . $fontRenderHinting;
+        }
+
+        if ($args !== []) {
+            $browsershot->setOption('args', array_values(array_unique($args)));
+        }
 
 
         return $browsershot;
